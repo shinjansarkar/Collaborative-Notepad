@@ -15,6 +15,12 @@ def home():
 
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return redirect(url_for('static', filename='favicon.png'))
+
+
+
 @app.route('/room/<room_id>')
 def editor(room_id):
     if room_id not in docs:
