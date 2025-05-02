@@ -8,6 +8,14 @@ This is a collaborative text editor built with Flask and Socket.IO that allows m
 - **Room-based Editing:** Each room has a unique ID, and users join by visiting a URL containing that ID.
 - **Dark/Light Mode:** Users can toggle between dark and light themes for a personalized experience.
 - **Shareable Link:** Users can share the room link with others to collaborate.
+  
+## 🛠️ Tech Stack
+
+  Backend: Flask, Flask-SocketIO
+
+  Frontend: HTML, CSS, JavaScript, Socket.IO (Client)
+
+  Realtime Communication: WebSockets
 
 ## Installation
 
@@ -62,10 +70,4 @@ collaborative-flask-editor/
 
 ```
 
-### 🛠️ Tech Stack
 
-  Backend: Flask, Flask-SocketIO
-
-  Frontend: HTML, CSS, JavaScript, Socket.IO (Client)
-
-  Realtime Communication: WebSockets
