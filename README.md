@@ -25,12 +25,15 @@ Follow these steps to get the project up and running:
 
 ```bash
 git clone https://github.com/your-username/collaborative-flask-editor.git
+
 cd collaborative-flask-editor
 ```
 ### Create a Virtual Environment
 
 ```bash
+
 python -m venv venv
+
 source venv/bin/activate
 ```
 ### Install Dependencies
