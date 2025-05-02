@@ -19,4 +19,53 @@ Follow these steps to get the project up and running:
 git clone https://github.com/your-username/collaborative-flask-editor.git
 cd collaborative-flask-editor
 ```
+### Create a Virtual Environment
 
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+### Install Dependencies
+
+```bash
+pip install flask flask-socketio eventlet
+```
+### Run the App
+
+```bash
+python app.py
+
+```
+### open in your browser
+
+```bash
+http://localhost:5000/
+
+```
+### 🗂️ Project Structure
+
+```bash
+
+collaborative-flask-editor/
+│
+├── templates/
+│   └── editor.html         # Main HTML editor template
+│
+├── static/
+│   └── favicon.png         # Favicon image
+│  
+│
+├── app.py                  # Main Flask server with Socket.IO
+├── requirements.txt        # Python dependencies
+└── README.md               # Project documentation
+
+
+```
+
+### 🛠️ Tech Stack
+
+  Backend: Flask, Flask-SocketIO
+
+  Frontend: HTML, CSS, JavaScript, Socket.IO (Client)
+
+  Realtime Communication: WebSockets
