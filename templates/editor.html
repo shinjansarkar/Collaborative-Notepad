@@ -140,7 +140,8 @@
   </div>
 
   <script>
-    const socket = io.connect("{{ socket_url }}", { transports: ['websocket'] });
+    const socket =  io.connect('http://' + document.domain + ':' + location.port);
+
 
     const roomId = "{{ room_id }}";
     const roomURL = window.location.origin + "/room/" + roomId;
