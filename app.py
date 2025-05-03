@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask, render_template, redirect, url_for, request, abort
 from flask_socketio import SocketIO, emit, join_room
 import uuid
