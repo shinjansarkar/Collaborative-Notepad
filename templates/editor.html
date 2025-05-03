@@ -7,6 +7,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+  <script src="https://unpkg.com/yjs"></script>
+  <script src="https://unpkg.com/y-websocket"></script>
 
 
 
@@ -139,52 +141,61 @@
     </footer>
   </div>
 
-  <script>
-    const socket = io();
+  <script src="https://unpkg.com/yjs"></script>
+<script src="https://unpkg.com/y-websocket"></script>
+<script>
+  const roomId = "{{ room_id }}";
+  const roomURL = window.location.origin + "/room/" + roomId;
 
+  const ydoc = new Y.Doc();
+  const provider = new WebsocketProvider('wss://demos.yjs.dev', roomId, ydoc); // CRDT syncing
 
+  const yText = ydoc.getText('shared-text');
+  const editor = document.getElementById('editor');
 
-    const roomId = "{{ room_id }}";
-    const roomURL = window.location.origin + "/room/" + roomId;
+  // Initial value from CRDT
+  editor.value = yText.toString();
 
-    socket.emit('join', { room: roomId });
+  // Update editor when Yjs data changes
+  yText.observe(event => {
+    const cursor = editor.selectionStart;
+    editor.value = yText.toString();
+    editor.selectionStart = editor.selectionEnd = cursor;
+  });
 
-    socket.on('load_content', function(data) {
-      document.getElementById('editor').value = data;
-    });
+  // Update Yjs data when editor changes
+  editor.addEventListener('input', () => {
+    const newVal = editor.value;
+    yText.delete(0, yText.length);
+    yText.insert(0, newVal);
+  });
 
-    socket.on('update', function(data) {
-      document.getElementById('editor').value = data;
-    });
-
-    document.getElementById('editor').addEventListener('input', function () {
-      socket.emit('update', { room: roomId, content: this.value });
-    });
-
-    function copyRoomUrl() {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(roomURL).then(() => {
-          alert("Room link copied: " + roomURL);
-        }).catch(err => {
-          alert("Copy failed: " + err);
-        });
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = roomURL;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
+  // Share room link
+  function copyRoomUrl() {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(roomURL).then(() => {
         alert("Room link copied: " + roomURL);
-      }
+      }).catch(err => {
+        alert("Copy failed: " + err);
+      });
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = roomURL;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert("Room link copied: " + roomURL);
     }
+  }
 
-    function toggleTheme() {
-      const body = document.body;
-      const btn = document.getElementById("themeBtn");
-      body.classList.toggle("dark");
-      btn.innerText = body.classList.contains("dark") ? "☀️" : "🌙";
-    }
-  </script>
+  // Theme toggle
+  function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById("themeBtn");
+    body.classList.toggle("dark");
+    btn.innerText = body.classList.contains("dark") ? "☀️" : "🌙";
+  }
+</script>
 </body>
 </html>
