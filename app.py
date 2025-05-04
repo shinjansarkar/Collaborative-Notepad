@@ -1,11 +1,12 @@
 import eventlet
 eventlet.monkey_patch()
+
 from flask import Flask, render_template, redirect, url_for, request, abort
 from flask_socketio import SocketIO, emit, join_room
 import uuid
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 docs = {}  # Stores all documents by room ID
 
@@ -49,4 +50,4 @@ def update(data):
     emit('update', content, to=room, skip_sid=request.sid)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)  # Removed debug=True
