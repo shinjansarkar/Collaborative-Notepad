@@ -34,7 +34,7 @@ cd collaborative-flask-editor
 
 python -m venv venv
 
-venv/bin/activate
+venv\Scripts\activate
 ```
 ### Install Dependencies
 
