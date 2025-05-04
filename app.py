@@ -10,18 +10,18 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 docs = {}  # Stores all documents by room ID
 
 @app.route('/')
-def home():
-    room_id = str(uuid.uuid4())[:8]  # Generate a unique room ID
-    docs[room_id] = ""  # Initialize document content for this room
+def landing():
+    return render_template('landing.html')
+
+@app.route('/start')
+def start_collaboration():
+    room_id = str(uuid.uuid4())[:8]
+    docs[room_id] = ""
     return redirect(url_for('editor', room_id=room_id))
-
-
 
 @app.route('/favicon.ico')
 def favicon():
     return redirect(url_for('static', filename='favicon.png'))
-
-
 
 @app.route('/room/<room_id>')
 def editor(room_id):
@@ -29,14 +29,12 @@ def editor(room_id):
         abort(404)
     return render_template('editor.html', room_id=room_id, content=docs[room_id])
 
-
 @socketio.on('join')
 def join(data):
     room = data['room']
     if room not in docs:
         emit('error', {'message': 'Room not found'}, to=request.sid)
         return
-
     join_room(room)
     emit('load_content', docs.get(room, ""), to=request.sid)
 
@@ -44,11 +42,9 @@ def join(data):
 def update(data):
     room = data['room']
     content = data['content']
-    
     if room not in docs:
         emit('error', {'message': 'Room not found'}, to=request.sid)
         return
-
     docs[room] = content
     emit('update', content, to=room, skip_sid=request.sid)
 
