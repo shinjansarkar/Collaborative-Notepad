@@ -60,15 +60,17 @@ http://localhost:5000/
 collaborative-flask-editor/
 │
 ├── templates/
-│   └── editor.html         # Main HTML editor template
+│   ├── editor.html         # Collaborative notepad editor UI
+│   └── landing.html        # New landing page with "Start Collaborating" button
 │
 ├── static/
 │   └── favicon.png         # Favicon image
-│  
 │
-├── app.py                  # Main Flask server with Socket.IO
-├── requirements.txt        # Python dependencies
-└── README.md               # Project documentation
+├── app.py                  # Main Flask server with Socket.IO logic and routing
+├── requirements.txt        # Python dependencies (Flask, Flask-SocketIO, eventlet, etc.)
+├── README.md               # Project documentation
+└── .gitignore              # (Optional) Ignore virtualenv, __pycache__, etc.
+
 
 
 ```
