@@ -47,7 +47,7 @@ pip install flask flask-socketio eventlet
 python app.py
 
 ```
-### open in your browser
+### open in your browser 
 
 ```bash
 http://localhost:5000/
@@ -59,20 +59,45 @@ http://localhost:5000/
 
 collaborative-flask-editor/
 │
+├── Dockerfile              # Dockerfile to containerize the app
 ├── templates/
 │   ├── editor.html         # Collaborative notepad editor UI
-│   └── landing.html        # New landing page with "Start Collaborating" button
+│   └── landing.html        # Landing page with "Start Collaborating" button
 │
 ├── static/
 │   └── favicon.png         # Favicon image
 │
 ├── app.py                  # Main Flask server with Socket.IO logic and routing
-├── requirements.txt        # Python dependencies (Flask, Flask-SocketIO, eventlet, etc.)
+├── requirements.txt        # Python dependencies
 ├── README.md               # Project documentation
-└── .gitignore              # (Optional) Ignore virtualenv, __pycache__, etc.
-
-
+└── .gitignore              # Ignore virtualenv, __pycache__, etc.
 
 ```
+### 🐳 Run with Docker
+#### If you prefer Docker, the image is available on Docker Hub.
 
+#### 🧱 Pull the Image
 
+```bash
+docker pull shinjan7/flask-collaborative-notepad:latest
+
+```
+### ▶️ Run the Container
+
+```bash
+docker run -d -p 5000:5000 --name collab-notepad shinjan7/flask-collaborative-notepad:latest
+
+```
+### Then visit:
+
+```bash
+http://localhost:5000/
+
+```
+### 🔁 To Stop & Remove 
+
+```bash
+docker stop collab-notepad
+docker rm collab-notepad
+
+```
