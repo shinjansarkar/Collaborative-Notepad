@@ -57,20 +57,21 @@ http://localhost:5000/
 
 ```bash
 
-collaborative-flask-editor/
+Collaborative-Notepad/
 │
-├── Dockerfile              # Dockerfile to containerize the app
-├── templates/
-│   ├── editor.html         # Collaborative notepad editor UI
-│   └── landing.html        # Landing page with "Start Collaborating" button
+├── __pycache__/              # Compiled Python files (auto-generated)
+├── nginx/                    # Contains Nginx configuration files
+├── static/                   # Static assets (CSS, JS, favicon, etc.)
+├── templates/                # HTML templates (Jinja2)
+├── tests/                    # Unit tests
 │
-├── static/
-│   └── favicon.png         # Favicon image
-│
-├── app.py                  # Main Flask server with Socket.IO logic and routing
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-└── .gitignore              # Ignore virtualenv, __pycache__, etc.
+├── .gitignore                # Git ignored files
+├── Dockerfile                # Dockerfile for the Flask app
+├── docker-compose.yml        # Docker Compose configuration
+├── requirements.txt          # Python dependencies
+├── app.py                    # Main Flask application
+
+
 
 ```
 ### 🐳 Run with Docker
