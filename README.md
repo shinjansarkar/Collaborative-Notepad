@@ -80,25 +80,27 @@ Collaborative-Notepad/
 #### 🧱 Pull the Image
 
 ```bash
-docker pull shinjan7/flask-collaborative-notepad:latest
+docker pull shinjan7/collabrative_notepad:nginx
+docker pull shinjan7/collabrative_notepad:app
+
 
 ```
 ### ▶️ Run the Container
 
 ```bash
-docker run -d -p 5000:5000 --name collab-notepad shinjan7/flask-collaborative-notepad:latest
+docker-compose up --build
+
 
 ```
+### To stop the services:
+```bash
+docker-compose down
+
+```
+
 ### Then visit:
 
 ```bash
 http://localhost:5000/
-
-```
-### 🔁 To Stop & Remove 
-
-```bash
-docker stop collab-notepad
-docker rm collab-notepad
 
 ```
