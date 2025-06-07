@@ -57,20 +57,21 @@ http://localhost:5000/
 
 ```bash
 
-collaborative-flask-editor/
+Collaborative-Notepad/
 │
-├── Dockerfile              # Dockerfile to containerize the app
-├── templates/
-│   ├── editor.html         # Collaborative notepad editor UI
-│   └── landing.html        # Landing page with "Start Collaborating" button
+├── __pycache__/              # Compiled Python files (auto-generated)
+├── nginx/                    # Contains Nginx configuration files
+├── static/                   # Static assets (CSS, JS, favicon, etc.)
+├── templates/                # HTML templates (Jinja2)
+├── tests/                    # Unit tests
 │
-├── static/
-│   └── favicon.png         # Favicon image
-│
-├── app.py                  # Main Flask server with Socket.IO logic and routing
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-└── .gitignore              # Ignore virtualenv, __pycache__, etc.
+├── .gitignore                # Git ignored files
+├── Dockerfile                # Dockerfile for the Flask app
+├── docker-compose.yml        # Docker Compose configuration
+├── requirements.txt          # Python dependencies
+├── app.py                    # Main Flask application
+
+
 
 ```
 ### 🐳 Run with Docker
@@ -79,25 +80,27 @@ collaborative-flask-editor/
 #### 🧱 Pull the Image
 
 ```bash
-docker pull shinjan7/flask-collaborative-notepad:latest
+docker pull shinjan7/collabrative_notepad:nginx
+docker pull shinjan7/collabrative_notepad:app
+
 
 ```
 ### ▶️ Run the Container
 
 ```bash
-docker run -d -p 5000:5000 --name collab-notepad shinjan7/flask-collaborative-notepad:latest
+docker-compose up --build
+
 
 ```
+### To stop the services:
+```bash
+docker-compose down
+
+```
+
 ### Then visit:
 
 ```bash
 http://localhost:5000/
-
-```
-### 🔁 To Stop & Remove 
-
-```bash
-docker stop collab-notepad
-docker rm collab-notepad
 
 ```
