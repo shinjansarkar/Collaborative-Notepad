@@ -6,7 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Set working directory
-WORKDIR /app
+WORKDIR  /app
+
+# Install system dependencies
 
 # Copy requirements first to leverage Docker layer caching
 COPY requirements.txt .
