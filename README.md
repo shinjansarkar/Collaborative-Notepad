@@ -11,7 +11,7 @@ This is a collaborative text editor built with Flask and Socket.IO that allows m
   
 ## 🛠️ Tech Stack
 
-  Backend: Flask, Flask-SocketIO
+  Backend: Flask, Flask-SocketIO, Gitlab Integration
 
   Frontend: HTML, CSS, JavaScript, Socket.IO (Client)
 
