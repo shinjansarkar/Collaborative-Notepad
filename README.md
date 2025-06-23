@@ -77,18 +77,12 @@ collaborative-flask-editor/
 
 ---
 
-## 🐳 Docker Setup
+### 🐳 Docker Setup
 
 ### 1️⃣ Prerequisites
 
 - Docker & Docker Compose installed
 
-### 2️⃣ Run the App
-
-```bash
-git clone https://github.com/shinjansarkar/Collaborative-Notepad.git
-cd Collaborative-Notepad
-```
 # Start the containers
 ```
 docker-compose up --build
@@ -96,7 +90,7 @@ docker-compose up --build
 ### Then visit:
 
 ```bash
-http://localhost:5000/
+http://localhost:8080/
 
 ```
 ### 🔁 To Stop & Remove 
