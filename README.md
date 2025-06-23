@@ -88,10 +88,11 @@ collaborative-flask-editor/
 ```bash
 git clone https://github.com/shinjansarkar/Collaborative-Notepad.git
 cd Collaborative-Notepad
-
+```
 # Start the containers
+```
 docker-compose up --build
-
+```
 ### Then visit:
 
 ```bash
@@ -101,7 +102,7 @@ http://localhost:5000/
 ### 🔁 To Stop & Remove 
 
 ```bash
-docker stop collab-notepad
-docker rm collab-notepad
+docker-compose down
+
 
 ```
