@@ -5,10 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: collaborative-notepad
+    container_name: flask-app
     ports:
       - "5000:5000"
-    restart: always
+    networks:
+      - notepad
 
   nginx:
     build:
@@ -16,7 +17,12 @@ services:
       dockerfile: Dockerfile
     container_name: nginx-proxy
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - flask
-    restart: always
+    networks:
+      - notepad
+
+networks:
+  notepad:
+    external: true
