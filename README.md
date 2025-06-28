@@ -96,7 +96,9 @@ Collaborative-Notepad/
 
 # Start the containers
 ```
-docker-compose up --build
+docker-compose up -d
+
+
 ```
 ### Then visit:
 
