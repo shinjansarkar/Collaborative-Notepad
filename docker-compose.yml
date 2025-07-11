@@ -8,8 +8,8 @@ services:
     container_name: flask-app
     ports:
       - "5000:5000"
-    networks:
-      - notepad
+    # networks:
+    #   - notepad
 
   nginx:
     build:
@@ -20,9 +20,9 @@ services:
       - "8080:80"
     depends_on:
       - flask
-    networks:
-      - notepad
+#     networks:
+#       - notepad
 
-networks:
-  notepad:
-    external: true
+# networks:
+#   notepad:
+#     external: true
