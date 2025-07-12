@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome | Collaborative Notepad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #4fc3f7, #1976d2);
+      height: 100vh;
+      margin: 0;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 44px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+
+    a.button {
+      background: white;
+      color: #1976d2;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    a.button:hover {
+      background: #f0f0f0;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 Welcome to Collaborative Notepad</h1>
+  <p>Create and edit notes together in real-time. Click the button below to start a new session.</p>
+  <a class="button" href="{{ url_for('start_collaboration') }}">Start Collaborating 🚀</a>
+</body>
+</html>

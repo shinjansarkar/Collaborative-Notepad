@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Collaborative Editor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.3s, color 0.3s;
+      background: #f4f6f9;
+      color: #111;
+    }
+
+    .dark {
+      background: #121212;
+      color: #eee;
+    }
+
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header, footer {
+      width: 100%;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f1f1f;
+      color: white;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .tools {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    #editor {
+      width: 90%;
+      max-width: 800px;
+      margin: 24px auto;
+      height: 485px;
+      padding: 14px;
+      font-size: 14px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: inherit;
+      color: inherit;
+      display: block;
+      resize: vertical;
+      flex: 1;
+    }
+
+    footer {
+      font-size: 13px;
+      justify-content: center;
+      padding: 14px;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: #4fc3f7;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 0 3px;
+    }
+
+    @media (max-width: 600px) {
+      .title {
+        font-size: 15px;
+      }
+
+      #editor {
+        width: 95%;
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <header>
+      <div class="tools">
+        <button onclick="copyRoomUrl()">Share</button>
+      </div>
+      <div class="title">📝 Collaborative Notepad</div>
+      <div class="tools">
+        <button onclick="toggleTheme()" id="themeBtn">🌙</button>
+      </div>
+    </header>
+
+    <textarea id="editor">{{ content }}</textarea>
+
+    <footer>
+      Made by 
+      <a href="https://github.com/shinjansarkar" target="_blank">Shinjan</a> & 
+      <a href="https://github.com/Smaranika2005" target="_blank">Smaranika</a>
+    </footer>
+  </div>
+
+  <script>
+    const socket = io();
+
+
+
+    const roomId = "{{ room_id }}";
+    const roomURL = window.location.origin + "/room/" + roomId;
+
+    socket.emit('join', { room: roomId });
+
+    socket.on('load_content', function(data) {
+      document.getElementById('editor').value = data;
+    });
+
+    socket.on('update', function(data) {
+      document.getElementById('editor').value = data;
+    });
+
+    document.getElementById('editor').addEventListener('input', function () {
+      socket.emit('update', { room: roomId, content: this.value });
+    });
+
+    function copyRoomUrl() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(roomURL).then(() => {
+          alert("Room link copied: " + roomURL);
+        }).catch(err => {
+          alert("Copy failed: " + err);
+        });
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = roomURL;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        alert("Room link copied: " + roomURL);
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById("themeBtn");
+      body.classList.toggle("dark");
+      btn.innerText = body.classList.contains("dark") ? "☀️" : "🌙";
+    }
+  </script>
+</body>
+</html> 

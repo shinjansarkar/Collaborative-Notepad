@@ -1,0 +1,21 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.*
+
+# Pytest cache
+*.pytest_cache/
+
+# Editor / OS
+.DS_Store
+
+# Logs
+*.log
+main.tf
