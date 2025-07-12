@@ -50,7 +50,7 @@ python app.py
 ### open in your browser 
 
 ```bash
-http://localhost:5000/
+http://localhost/
 
 ```
 ### 🗂️ Project Structure
@@ -71,6 +71,9 @@ collaborative-flask-editor/
 ├── requirements.txt        # Python dependencies
 ├── README.md               # Project documentation
 └── .gitignore              # Ignore virtualenv, __pycache__, etc.
+├── docker-compose.yml       
+└── .gitlab.ci.yml          #for ci&cd
+
 
 ```
 ### 🐳 Run with Docker
