@@ -77,30 +77,22 @@ collaborative-flask-editor/
 
 ```
 ### 🐳 Run with Docker
-#### If you prefer Docker, the image is available on Docker Hub.
 
-#### 🧱 Pull the Image
-
-```bash
-docker pull shinjan7/flask-collaborative-notepad:latest
-
-```
 ### ▶️ Run the Container
 
 ```bash
-docker run -d -p 5000:5000 --name collab-notepad shinjan7/flask-collaborative-notepad:latest
+docker-compose up -d
 
 ```
 ### Then visit:
 
 ```bash
-http://localhost:5000/
+http://localhost
 
 ```
-### 🔁 To Stop & Remove 
+### 🔁 To Stop
 
 ```bash
-docker stop collab-notepad
-docker rm collab-notepad
+docker-compose down
 
 ```
