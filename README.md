@@ -20,7 +20,13 @@
   <img alt="Python" src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
 </p>
 
+<p align="center">
+  <img alt="Contributors" src="https://img.shields.io/github/contributors/Smaranika2005/collaborative-flask-editor?style=for-the-badge">
+</p>
+
 ---
+
+
 
 ## 🚀 About the Project
 
@@ -117,3 +123,12 @@ http://localhost/
 docker-compose down
 
 ```
+## 🤝 Contributors
+
+Thanks to the amazing people who helped build this project:
+
+- 👩‍💻 [@Smaranika2005](https://github.com/Smaranika2005) – Co-developer  
+
+- 🧑‍💻 [@shinjansarkar](https://github.com/shinjansarkar) – Maintainer
+
+Want to contribute? Fork the repo and open a pull request 🚀
