@@ -1,97 +1,118 @@
-# Collaborative Flask Editor
+<h1 align="center">📓 COLLABORATIVE-NOTEPAD</h1>
 
-This is a collaborative text editor built with Flask and Socket.IO that allows multiple users to edit a document in real-time. Users can join a room via a unique URL, and all changes are synced across all participants in real time.
+<p align="center"><i>Empower Collaboration, Transform Ideas into Reality</i></p>
 
-## Features
+<p align="center">
+  <img alt="Last Commit" src="https://img.shields.io/badge/last%20commit-last%20monday-lightgrey?style=for-the-badge&logo=git">
+  <img alt="HTML" src="https://img.shields.io/badge/html-63.1%25-blue?style=for-the-badge&logo=html5">
+  <img alt="Languages" src="https://img.shields.io/badge/languages-3-blue?style=for-the-badge">
+</p>
 
-- **Real-time Collaboration:** Users can edit the document simultaneously, and the changes are reflected in real-time for all participants.
-- **Room-based Editing:** Each room has a unique ID, and users join by visiting a URL containing that ID.
-- **Dark/Light Mode:** Users can toggle between dark and light themes for a personalized experience.
-- **Shareable Link:** Users can share the room link with others to collaborate.
-  
+<br/>
+
+<p align="center"><i>Built with the tools and technologies:</i></p>
+
+<p align="center">
+  <img alt="Flask" src="https://img.shields.io/badge/-Flask-black?style=for-the-badge&logo=flask">
+  <img alt="Markdown" src="https://img.shields.io/badge/-Markdown-000000?style=for-the-badge&logo=markdown">
+  <img alt="Nginx" src="https://img.shields.io/badge/-NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white">
+  <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img alt="Python" src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+</p>
+
+---
+
+## 🚀 About the Project
+
+**Collaborative-Notepad** is a collaborative text editor built using **Flask** and **Socket.IO** that allows multiple users to edit the same document in real time. It's simple, fast, and perfect for instant collaboration.
+
+---
+
+## ✨ Features
+
+- 🔁 **Real-time Collaboration** – See live changes from everyone in the room.
+- 🔒 **Room-based Editing** – Unique room ID for each session.
+- 🌗 **Dark/Light Theme** – Toggle between light and dark modes.
+- 🔗 **Sharable Links** – Copy the room URL and invite collaborators instantly.
+
+---
+
 ## 🛠️ Tech Stack
 
-  Backend: Flask, Flask-SocketIO, Gitlab Integration
+**Backend**  
+`Flask`, `Flask-SocketIO`, `eventlet`, `GitLab CI/CD`
 
-  Frontend: HTML, CSS, JavaScript, Socket.IO (Client)
+**Frontend**  
+`HTML`, `CSS`, `JavaScript`, `Socket.IO Client`
 
-  Realtime Communication: WebSockets
+**Realtime Communication**  
+`WebSockets`
 
-## Installation
+---
 
-Follow these steps to get the project up and running:
+## 📦 Installation
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/collaborative-flask-editor.git
-
 cd collaborative-flask-editor
 ```
-### Create a Virtual Environment
+### 2. Create a Virtual Environment
 
 ```bash
-
 python -m venv venv
-
+```
+# On Windows:
+```bash
 venv\Scripts\activate
 ```
-### Install Dependencies
-
+# On Linux/macOS:
+```bash
+source venv/bin/activate
+```
+### Install the Dependencies
 ```bash
 pip install flask flask-socketio eventlet
 ```
-### Run the App
-
+### Run the Application
 ```bash
 python app.py
-
 ```
-### open in your browser 
-
+### Open in Browser
 ```bash
 http://localhost/
-
 ```
-### 🗂️ Project Structure
-
+### 📁 Project Structure
 ```bash
-
 collaborative-flask-editor/
 │
-├── Dockerfile              # Dockerfile to containerize the app
+├── Dockerfile              # Container setup
+├── docker-compose.yml      # Compose config for multi-service deployment
+├── .gitlab-ci.yml          # GitLab CI/CD pipeline definition
+├── requirements.txt        # Python dependencies
+├── app.py                  # Main Flask application
+│
 ├── templates/
-│   ├── editor.html         # Collaborative notepad editor UI
-│   └── landing.html        # Landing page with "Start Collaborating" button
+│   ├── landing.html        # Landing page UI
+│   └── editor.html         # Collaborative editor interface
 │
 ├── static/
-│   └── favicon.png         # Favicon image
+│   └── favicon.png         # App icon
 │
-├── app.py                  # Main Flask server with Socket.IO logic and routing
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-└── .gitignore              # Ignore virtualenv, __pycache__, etc.
-├── docker-compose.yml       
-└── .gitlab.ci.yml          #for ci&cd
-
-
+└── .gitignore              # Ignored files (env, pycache, etc.)
 ```
-### 🐳 Run with Docker
 
+### 🐳 Docker Usage
 ### ▶️ Run the Container
-
 ```bash
 docker-compose up -d
-
 ```
-### Then visit:
-
+#### Then open your browser and visit:
 ```bash
-http://localhost
-
+http://localhost/
 ```
-### 🔁 To Stop
-
+### 🛑 Stop the Container
 ```bash
 docker-compose down
 
