@@ -7,6 +7,8 @@ variables:
 stages:
   - build
   - test
+  - deploy
+  
   
   
 
@@ -58,6 +60,7 @@ deploy:
     - scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deploy.sh $EC2_USER@$EC2_HOST:/home/ubuntu/deploy.sh
     # Run the copied script
     - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "chmod +x /home/ubuntu/deploy.sh && bash /home/ubuntu/deploy.sh"
+
 
 
 
