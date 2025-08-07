@@ -5,9 +5,10 @@ variables:
   NGINX_TAG : nginx
 
 stages:
-  - test
   - build
-
+  - test
+  
+  
 
 run_tests:
   stage: test
@@ -39,6 +40,30 @@ build_image:
      # Push both images
     - docker push $IMAGE_NAME:$APP_TAG 
     - docker push $IMAGE_NAME:$NGINX_TAG
+
+
+
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh
+    - mkdir -p ~/.ssh
+    - echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 400 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
+  script:
+    # Copy deploy.sh to EC2
+    - scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deploy.sh $EC2_USER@$EC2_HOST:/home/ubuntu/deploy.sh
+    # Run the copied script
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "chmod +x /home/ubuntu/deploy.sh && bash /home/ubuntu/deploy.sh"
+
+
+
+
+
+
 
 
 
