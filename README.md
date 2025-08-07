@@ -5,6 +5,7 @@
 <p align="center">
   <img alt="Last Commit" src="https://img.shields.io/badge/last%20commit-last%20monday-lightgrey?style=for-the-badge&logo=git">
   <img alt="HTML" src="https://img.shields.io/badge/html-63.1%25-blue?style=for-the-badge&logo=html5">
+  
   <img alt="Languages" src="https://img.shields.io/badge/languages-3-blue?style=for-the-badge">
 </p>
 
