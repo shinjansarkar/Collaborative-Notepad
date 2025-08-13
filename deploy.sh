@@ -14,8 +14,7 @@ rm -rf Collaborative-Notepad
 git clone https://github.com/shinjansarkar/Collaborative-Notepad.git
 cd Collaborative-Notepad
 
-echo "🐳 Pulling and starting containers with Docker Compose..."
-sudo docker-compose pull
+echo "🚀 Starting containers with Docker Compose..."
 sudo docker-compose up -d
 
 echo "✅ Deployment complete."
