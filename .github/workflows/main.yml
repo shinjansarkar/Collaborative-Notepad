@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Curl my site
-        run: curl -s https://collaborative-notepad-1.onrender.com/> /dev/null
+        run: curl -shttps://collaborative-notepad-gycr.onrender.com/> /dev/null
