@@ -1,28 +1,18 @@
 version: '3.8'
 
 services:
-  flask:
+  backend:
     build:
-      context: .
-    container_name: flask-app
-    expose:
-      - "5000"
-    
-    # networks:
-    #   - notepad
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx-proxy
+      context: ./server
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
-    depends_on:
-      - flask
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    # networks:
-    #   - notepad
-
-# networks:
-#   notepad:
-#     external: true
+      - "8000:8000"
+    environment:
+      PYTHONUNBUFFERED: "1"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect(('localhost', 8000)); s.close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped

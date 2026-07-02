@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --font-mono: var(--font-mono), monospace;
+  
+  /* Dynamic Theme Colors */
+  --color-bg-base: var(--background);
+  --color-paper: var(--surface);
+  --color-text-main: var(--text-primary);
+  --color-text-sub: var(--text-secondary);
+  --color-ink: var(--primary-accent);
+  --color-ink-hover: var(--primary-accent-hover);
+  --color-border-main: var(--paper-line);
+}
+
+/* Base design tokens */
+:root {
+  /* Default: Parchment Cream Light */
+  --background: #F8F6F0;
+  --surface: #FCFAF6;
+  --text-primary: #1E2229;
+  --text-secondary: #64748B;
+  --primary-accent: #6366F1; /* Modern Indigo */
+  --primary-accent-hover: #4F46E5;
+  --paper-line: #E2E8F0;
+  --paper-margin: #FDA4AF; /* Soft pink margin */
+  --border-clean: 1px solid rgba(0, 0, 0, 0.05);
+  --shadow-color: rgba(99, 102, 241, 0.04);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.06);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+  --shadow-lg: 0 12px 28px -3px rgba(0, 0, 0, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.02);
+}
+
+.theme-parchment {
+  --background: #F8F6F0;
+  --surface: #FCFAF6;
+  --text-primary: #1E2229;
+  --text-secondary: #64748B;
+  --primary-accent: #6366F1;
+  --primary-accent-hover: #4F46E5;
+  --paper-line: #E2DCD2;
+  --paper-margin: #FDA4AF;
+  --border-clean: 1px solid rgba(0, 0, 0, 0.05);
+  --shadow-color: rgba(99, 102, 241, 0.04);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.06);
+}
+
+.theme-sepia {
+  --background: #EFE7DA;
+  --surface: #FAF0E4;
+  --text-primary: #2D2216; /* Darkened for high contrast */
+  --text-secondary: #594636; /* Darkened for readability */
+  --primary-accent: #9A3412; /* Terracotta Rust */
+  --primary-accent-hover: #7C2D12;
+  --paper-line: #D9CBB5; /* Slightly darker lines */
+  --paper-margin: #FDBA74;
+  --border-clean: 1px solid rgba(75, 58, 38, 0.12);
+  --shadow-color: rgba(154, 52, 18, 0.06);
+  --shadow-glow: 0 0 25px rgba(154, 52, 18, 0.08);
+}
+
+.theme-obsidian {
+  --background: #090A0F;
+  --surface: #13151D;
+  --text-primary: #E2E8F0;
+  --text-secondary: #94A3B8;
+  --primary-accent: #818CF8; /* Electric Indigo */
+  --primary-accent-hover: #6366F1;
+  --paper-line: #222533;
+  --paper-margin: #473C38;
+  --border-clean: 1px solid rgba(255, 255, 255, 0.03);
+  --shadow-color: rgba(129, 140, 248, 0.12);
+  --shadow-glow: 0 0 35px rgba(129, 140, 248, 0.12);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Glassmorphism containers */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.02);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.theme-obsidian .glass-surface {
+  background: rgba(19, 21, 29, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Ruled notepad paper sheet */
+.paper-sheet {
+  background-color: var(--surface);
+  /* 
+    Vertical margin line: at 56px, 1px wide. 
+    Horizontal ruled lines: repeating every 32px.
+  */
+  background-image: 
+    linear-gradient(90deg, transparent 56px, var(--paper-margin) 56px, var(--paper-margin) 57px, transparent 57px),
+    linear-gradient(var(--paper-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 32px;
+  background-attachment: local;
+  border-radius: 12px;
+  position: relative;
+  border: var(--border-clean);
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Dynamic Ambient Glow Pulse */
+@keyframes ambient-pulse {
+  0% { box-shadow: 0 4px 30px rgba(0,0,0,0.02), var(--shadow-glow); }
+  50% { box-shadow: 0 4px 40px rgba(0,0,0,0.02), 0 0 50px var(--shadow-color); }
+  100% { box-shadow: 0 4px 30px rgba(0,0,0,0.02), var(--shadow-glow); }
+}
+.glow-ink {
+  animation: ambient-pulse 8s infinite ease-in-out;
+}
+
+/* Page Fold hover effect */
+.page-fold::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent transparent rgba(0, 0, 0, 0.08) transparent;
+  border-bottom-left-radius: 6px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.theme-obsidian .page-fold::after {
+  border-color: transparent transparent rgba(255, 255, 255, 0.08) transparent;
+}
+.page-fold:hover::after {
+  border-width: 0 28px 28px 0;
+}
+
+/* Ruled Textarea alignment & Rich Text Formats */
+.ruled-textarea {
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+  line-height: 32px;
+  padding: 32px 32px 32px 76px; /* Starts exactly to the right of red margin line at 56px */
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: color 0.4s ease;
+}
+.ruled-textarea ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin: 0 !important;
+}
+.ruled-textarea ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin: 0 !important;
+}
+.ruled-textarea li {
+  line-height: 32px !important;
+}
+.ruled-textarea pre {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 0 1rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  margin: 0;
+  display: block;
+  white-space: pre-wrap;
+  border: var(--border-clean);
+}
+.theme-obsidian .ruled-textarea pre {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+.ruled-textarea a {
+  color: var(--primary-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ruled-textarea h3, .ruled-textarea h2, .ruled-textarea h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 32px; /* strict rhythm */
+  color: var(--primary-accent);
+}
+
+/* Clean Custom buttons with organic transitions */
+.btn-primary {
+  background-color: var(--primary-accent);
+  color: #FFFFFF;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px -2px var(--shadow-color);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  background-color: var(--primary-accent-hover);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px -2px var(--shadow-color);
+}
+.btn-primary:active {
+  transform: translateY(-0.5px);
+}
+
+.btn-secondary {
+  background-color: var(--surface);
+  border: var(--border-clean);
+  color: var(--text-primary);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-secondary:hover {
+  background-color: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  filter: brightness(0.96);
+}
+.theme-obsidian .btn-secondary:hover {
+  filter: brightness(1.15);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 9999px;
+}
+.theme-obsidian ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.12);
+}

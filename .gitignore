@@ -1,10 +1,64 @@
-# Python
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.venv/
 venv/
+env/
+
+# Next.js
+.next/
+out/
+build/
+dist/
+client/.next/
+client/out/
+client/build/
+client/dist/
+
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Logs and Debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store
 
 # Terraform
-
 main.tf
 .terraform/
 .terraform.lock.hcl
@@ -12,12 +66,42 @@ terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.*
 
-# Pytest cache
-*.pytest_cache/
-
-# Editor / OS
+# Editor and OS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Logs
-*.log
-main.tf
+# Testing
+coverage/
+*.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/

@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.flaskenv
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+npm-debug.log
+
+# Documentation
+docs/
+
+# Tests (if not part of the deployable app)
+tests/
+
+
+# Critical entries added by Auto Docker
+.ssh
+node_modules/
