@@ -458,7 +458,7 @@ export default function Home() {
         </div>
         
         <div>
-          Built with ❤️ &bull; <a href="https://github.com/shinjansarkar" target="_blank" className="hover:text-ink underline transition-colors font-semibold">Shinjan</a>
+          Built with ❤️ &bull; <a href="https://github.com/shinjansarkar" target="_blank" className="hover:text-ink underline transition-colors font-semibold">Shinjan</a> &amp; <a href="https://github.com/Smaranika2005" target="_blank" className="hover:text-ink underline transition-colors font-semibold">Smaranika</a>
         </div>
 
         <div>

@@ -1,135 +1,211 @@
-<h1 align="center">📓 COLLABORATIVE-NOTEPAD</h1>
+# Collaborative Notepad
 
-<p align="center"><i>Empower Collaboration, Transform Ideas into Reality</i></p>
+Collaborative Notepad is a real-time shared editor with:
 
-<p align="center">
-  <img alt="Last Commit" src="https://img.shields.io/badge/last%20commit-last%20monday-lightgrey?style=for-the-badge&logo=git">
-  <img alt="HTML" src="https://img.shields.io/badge/html-63.1%25-blue?style=for-the-badge&logo=html5">
-  
-  <img alt="Languages" src="https://img.shields.io/badge/languages-3-blue?style=for-the-badge">
-</p>
+- Frontend: Next.js (App Router) in [client](client)
+- Backend: Flask + Flask-SocketIO in [server](server)
+- Realtime sync: Socket.IO (WebSocket/polling)
 
-<br/>
+## Quick Start
 
-<p align="center"><i>Built with the tools and technologies:</i></p>
+1. Start backend (port 8000)
+2. Start frontend (port 3000)
+3. Open http://localhost:3000
 
-<p align="center">
-  <img alt="Flask" src="https://img.shields.io/badge/-Flask-black?style=for-the-badge&logo=flask">
-  <img alt="Markdown" src="https://img.shields.io/badge/-Markdown-000000?style=for-the-badge&logo=markdown">
-  <img alt="Nginx" src="https://img.shields.io/badge/-NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white">
-  <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-  <img alt="Python" src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-</p>
+## Prerequisites
 
-<p align="center">
-  <img alt="Contributors" src="https://img.shields.io/github/contributors/Smaranika2005/collaborative-flask-editor?style=for-the-badge">
-</p>
+- Node.js 20+
+- npm 10+
+- Python 3.11+
+- pip
+- (Optional) Docker + Docker Compose
 
----
+## Project Structure
 
-
-
-## 🚀 About the Project
-
-**Collaborative-Notepad** is a collaborative text editor built using **Flask** and **Socket.IO** that allows multiple users to edit the same document in real time. It's simple, fast, and perfect for instant collaboration.
-
----
-
-## ✨ Features
-
-- 🔁 **Real-time Collaboration** – See live changes from everyone in the room.
-- 🔒 **Room-based Editing** – Unique room ID for each session.
-- 🌗 **Dark/Light Theme** – Toggle between light and dark modes.
-- 🔗 **Sharable Links** – Copy the room URL and invite collaborators instantly.
-
----
-
-## 🛠️ Tech Stack
-
-**Backend**  
-`Flask`, `Flask-SocketIO`, `eventlet`, `GitLab CI/CD`
-
-**Frontend**  
-`HTML`, `CSS`, `JavaScript`, `Socket.IO Client`
-
-**Realtime Communication**  
-`WebSockets`
-
----
-
-## 📦 Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/collaborative-flask-editor.git
-cd collaborative-flask-editor
-```
-### 2. Create a Virtual Environment
-
-```bash
-python -m venv venv
-```
-# On Windows:
-```bash
-venv\Scripts\activate
-```
-# On Linux/macOS:
-```bash
-source venv/bin/activate
-```
-### Install the Dependencies
-```bash
-pip install flask flask-socketio eventlet
-```
-### Run the Application
-```bash
-python app.py
-```
-### Open in Browser
-```bash
-http://localhost/
-```
-### 📁 Project Structure
-```bash
-collaborative-flask-editor/
-│
-├── Dockerfile              # Container setup
-├── docker-compose.yml      # Compose config for multi-service deployment
-├── .gitlab-ci.yml          # GitLab CI/CD pipeline definition
-├── requirements.txt        # Python dependencies
-├── app.py                  # Main Flask application
-│
-├── templates/
-│   ├── landing.html        # Landing page UI
-│   └── editor.html         # Collaborative editor interface
-│
-├── static/
-│   └── favicon.png         # App icon
-│
-└── .gitignore              # Ignored files (env, pycache, etc.)
+```text
+.
+├─ client/                 # Next.js frontend
+├─ server/                 # Flask + Socket.IO backend
+├─ docker-compose.yml      # Docker setup for backend
+├─ nginx.conf
+└─ README-Docker.md
 ```
 
-### 🐳 Docker Usage
-### ▶️ Run the Container
+## Run Locally (Frontend + Backend)
+
+### 1. Start the backend
+
+From the project root:
+
 ```bash
-docker-compose up -d
+python -m venv .venv
 ```
-#### Then open your browser and visit:
+
+Activate virtual environment:
+
+Windows (PowerShell):
+
 ```bash
-http://localhost/
+.\.venv\Scripts\Activate.ps1
 ```
-### 🛑 Stop the Container
+
+macOS/Linux:
+
 ```bash
-docker-compose down
-
+source .venv/bin/activate
 ```
-## 🤝 Contributors
 
-Thanks to the amazing people who helped build this project:
+Install dependencies:
 
-- 👩‍💻 [@Smaranika2005](https://github.com/Smaranika2005) – Co-developer  
+```bash
+pip install -r server/requirements.txt
+```
 
-- 🧑‍💻 [@shinjansarkar](https://github.com/shinjansarkar) – Maintainer
+Run the backend:
 
-Want to contribute? Fork the repo and open a pull request 🚀
+```bash
+python server/app.py
+```
+
+Backend runs on: http://localhost:8000
+
+### 2. Start the frontend
+
+Open a new terminal from the project root:
+
+```bash
+cd client
+npm install
+```
+
+Create an environment file [client/.env.local](client/.env.local):
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+Run the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend runs on: http://localhost:3000
+
+## Run with Docker (Backend) + Local Frontend
+
+This repository's [docker-compose.yml](docker-compose.yml) currently runs the backend service.
+
+### 1. Start backend in Docker
+
+From the project root:
+
+```bash
+docker compose up --build
+```
+
+If your system uses the legacy CLI:
+
+```bash
+docker-compose up --build
+```
+
+Backend will be available at: http://localhost:8000
+
+### 2. Start frontend locally
+
+In another terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Make sure [client/.env.local](client/.env.local) contains:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+## Production Deployment (Vercel Frontend + Oracle Backend)
+
+### 1. Restrict backend origins
+
+Set `ALLOWED_ORIGINS` on your Oracle server to only your real frontend domains.
+
+Example:
+
+```env
+ALLOWED_ORIGINS=https://your-app.vercel.app,https://www.yourdomain.com
+```
+
+Do not use `*` in production.
+
+### 2. Set frontend API URL on Vercel
+
+In Vercel project settings, set:
+
+```env
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com
+```
+
+### 3. Put backend behind HTTPS reverse proxy
+
+- Run Flask/Socket.IO on internal port `8000`.
+- Terminate TLS at Nginx/Caddy on your Oracle VM.
+- Proxy both `/api/*` and Socket.IO traffic to `http://127.0.0.1:8000`.
+
+### 4. Lock down network exposure
+
+- Open only `80/443` publicly.
+- Block direct public access to `8000` with your VM firewall/security list.
+
+### 5. Keep secrets out of code
+
+- Store server-side secrets as environment variables only.
+- Do not commit `.env` files.
+
+### 6. Keep dependencies updated
+
+- Regularly patch OS packages and Python/Node dependencies.
+- Rebuild and redeploy images after security updates.
+
+## Useful Commands
+
+From [client](client):
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
+
+From project root (backend tests):
+
+```bash
+pytest
+```
+
+## Troubleshooting
+
+- Frontend shows connection error:
+  - Confirm backend is running on port 8000.
+  - Confirm `NEXT_PUBLIC_API_URL` in [client/.env.local](client/.env.local).
+  - Restart `npm run dev` after changing env variables.
+- Port already in use:
+  - Stop the process on port 3000 or 8000, then restart services.
+- Socket reconnect issues:
+  - Check that both REST API and Socket.IO target the same backend URL.
+  - Verify your production domain is included in `ALLOWED_ORIGINS`.
+
+## Notes
+
+- Backend entrypoint: [server/app.py](server/app.py)
+- Frontend room page: [client/app/room/[roomId]/page.tsx](client/app/room/[roomId]/page.tsx)
+- Docker backend image definition: [server/Dockerfile](server/Dockerfile)
+
+## Contributors
+
+- [Smaranika2005](https://github.com/Smaranika2005)
