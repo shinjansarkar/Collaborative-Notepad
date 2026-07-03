@@ -136,15 +136,6 @@ export default function Home() {
           
           {/* Hero Left Content */}
           <div className="lg:col-span-6 flex flex-col gap-8 text-center lg:text-left items-center lg:items-start">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-ink/20 text-ink text-[11px] font-bold uppercase tracking-widest bg-ink/5 backdrop-blur-sm"
-            >
-              <Sparkles className="w-3.5 h-3.5 fill-ink/20" />
-              Dynamic Lined Canvas
-            </motion.div>
 
             <div className="relative">
               <motion.h1 
