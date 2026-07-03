@@ -118,10 +118,6 @@ export default function Home() {
               Workflow
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-ink transition-all group-hover:w-full"></span>
             </a>
-            <a href="https://github.com/shinjansarkar" target="_blank" className="hover:text-ink transition-colors relative group">
-              Developer
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-ink transition-all group-hover:w-full"></span>
-            </a>
           </nav>
 
           <button 
