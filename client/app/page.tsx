@@ -8,17 +8,17 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BackgroundBlobs from '@/components/BackgroundBlobs';
+import { buildApiUrl } from '@/lib/api';
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
   const createNewRoom = async () => {
     setLoading(true);
     setError('');
+
     try {
       let userId = localStorage.getItem('notepad_user_id');
       if (!userId) {
@@ -26,7 +26,7 @@ export default function Home() {
         localStorage.setItem('notepad_user_id', userId);
       }
       
-      const response = await fetch(`${API_BASE}/api/room`, {
+      const response = await fetch(buildApiUrl('/api/room'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId })
@@ -38,7 +38,7 @@ export default function Home() {
       router.push(`/room/${data.room_id}`);
     } catch (err) {
       console.error(err);
-      setError('Connection failed. Make sure your Python Flask backend is running on port 8000!');
+      setError('Connection failed. Please try again in a moment.');
     } finally {
       setLoading(false);
     }

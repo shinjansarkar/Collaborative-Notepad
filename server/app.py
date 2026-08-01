@@ -1,20 +1,88 @@
 import time
+import os
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, jsonify, request, abort
-from flask_cors import CORS
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask import Flask, jsonify, request
+from flask_socketio import SocketIO, emit, join_room
+from werkzeug.exceptions import HTTPException
 import uuid
+SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
+SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
+
+
+def parse_cors_origins(raw_origins):
+    value = (raw_origins or "").strip()
+    if not value or value == "*":
+        return "*"
+    return [origin.strip() for origin in value.split(",") if origin.strip()]
+
+
+ALLOWED_CORS_ORIGINS = parse_cors_origins(CORS_ORIGINS)
+API_NAME = "Collaborative Notepad API"
+API_VERSION = "1.0.0"
 
 app = Flask(__name__)
-# Enable CORS for all REST API routes starting with /api/
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-# Enable CORS for Socket.IO connections
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+# Same-origin Socket.IO traffic is proxied through Nginx.
+socketio = SocketIO(
+    app,
+    async_mode='eventlet',
+    cors_allowed_origins=ALLOWED_CORS_ORIGINS,
+)
 
 docs = {}
+
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin")
+
+    if ALLOWED_CORS_ORIGINS == "*":
+        response.headers["Access-Control-Allow-Origin"] = origin or "*"
+    elif origin and origin in ALLOWED_CORS_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
+
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Vary"] = "Origin"
+    return response
+
+
+@app.errorhandler(HTTPException)
+def handle_http_exception(error):
+    response = jsonify({
+        "error": error.name,
+        "message": error.description,
+    })
+    return response, error.code
+
+
+@app.errorhandler(Exception)
+def handle_unexpected_exception(error):
+    app.logger.exception("Unhandled server error", exc_info=error)
+    return jsonify({
+        "error": "Internal Server Error",
+        "message": "An unexpected error occurred.",
+    }), 500
+
+
+# Service discovery endpoint for uptime checks and reverse-proxy health verification.
+@app.route("/", methods=["GET"])
+def root():
+    return jsonify({
+        "service": "Collaborative Notepad Backend",
+        "status": "running",
+    }), 200
+
+
+# API version discovery endpoint for REST clients.
+@app.route("/api/v1", methods=["GET"])
+def api_version():
+    return jsonify({
+        "name": API_NAME,
+        "version": API_VERSION,
+    }), 200
 
 def get_room_active_users(room_id):
     if room_id not in docs: return []
@@ -52,6 +120,15 @@ def get_user_role(room_data, user_id):
         return room_data["known_viewers"][user_id]
     return "Viewer"
 
+
+# Standard health check endpoint for Docker, Nginx, and orchestration probes.
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    return jsonify({"status": "ok"}), 200
+
+# Versioned room creation endpoint, kept in sync with the legacy alias below.
+@app.route('/api/v1/room', methods=['POST'])
+# Backward-compatible room creation alias for existing clients.
 @app.route('/api/room', methods=['POST'])
 def create_room():
     data = request.json or {}
@@ -70,6 +147,9 @@ def create_room():
     }
     return jsonify({"room_id": room_id}), 201
 
+# Versioned room lookup endpoint, kept in sync with the legacy alias below.
+@app.route('/api/v1/room/<room_id>', methods=['GET'])
+# Backward-compatible room lookup alias for existing clients.
 @app.route('/api/room/<room_id>', methods=['GET'])
 def check_room(room_id):
     if room_id not in docs:
@@ -196,4 +276,4 @@ def handle_ping():
     return True
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=8000)
+    socketio.run(app, host=SERVER_HOST, port=SERVER_PORT)

@@ -11,6 +11,7 @@ import {
   Users, History, FolderOpen, MessageSquare, Copy, X, Shield, Globe, Link2, PenTool
 } from 'lucide-react';
 import BackgroundBlobs from '@/components/BackgroundBlobs';
+import { API_BASE_URL, SOCKET_IO_PATH, buildApiUrl } from '@/lib/api';
 
 interface PageProps {
   params: Promise<{ roomId: string }>;
@@ -73,8 +74,6 @@ export default function RoomPage({ params }: PageProps) {
   const socketRef = useRef<Socket | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
   // 1. Verify if the room exists on load & setup identity
   useEffect(() => {
     let active = true;
@@ -89,7 +88,7 @@ export default function RoomPage({ params }: PageProps) {
         }
         setMyUserId(storedUserId);
 
-        const response = await fetch(`${API_BASE}/api/room/${roomId}`);
+        const response = await fetch(buildApiUrl(`/api/room/${roomId}`));
         if (!response.ok) {
           throw new Error('Room not found');
         }
@@ -118,7 +117,7 @@ export default function RoomPage({ params }: PageProps) {
     return () => {
       active = false;
     };
-  }, [roomId, API_BASE]);
+  }, [roomId]);
 
   // Track selection changes to update toolbar active states
   const updateActiveFormats = () => {
@@ -161,11 +160,23 @@ export default function RoomPage({ params }: PageProps) {
     };
   }, []);
 
+  const addToHistory = (val: string) => {
+    const hist = historyRef.current;
+    const idx = historyIndexRef.current;
+    if (hist[idx] === val) return;
+
+    const newHist = hist.slice(0, idx + 1);
+    newHist.push(val);
+    historyRef.current = newHist;
+    historyIndexRef.current = newHist.length - 1;
+  };
+
   // 2. Manage WebSocket connection
   useEffect(() => {
     if (loading || roomError || !myUserId) return;
 
-    const socket = io(API_BASE, {
+    const socket = io(API_BASE_URL || undefined, {
+      path: SOCKET_IO_PATH,
       transports: ['websocket', 'polling']
     });
     socketRef.current = socket;
@@ -222,18 +233,7 @@ export default function RoomPage({ params }: PageProps) {
         socket.disconnect();
       }
     };
-  }, [roomId, loading, roomError, API_BASE, myUserId]);
-
-  const addToHistory = (val: string) => {
-    const hist = historyRef.current;
-    const idx = historyIndexRef.current;
-    if (hist[idx] === val) return;
-
-    const newHist = hist.slice(0, idx + 1);
-    newHist.push(val);
-    historyRef.current = newHist;
-    historyIndexRef.current = newHist.length - 1;
-  };
+  }, [roomId, loading, roomError, myUserId]);
 
   // Typing lock management
   const handleTypingActivity = () => {
