@@ -17,6 +17,7 @@ Browser traffic always terminates at Nginx:
 3. `/socket.io/*` goes to Flask Socket.IO
 
 For split-host deployments (for example Vercel frontend + Render backend), the frontend uses `NEXT_PUBLIC_API_URL` to connect to the backend directly.
+If the frontend is served over HTTPS, `NEXT_PUBLIC_API_URL` must also point to an HTTPS backend URL. Browsers block requests from an HTTPS page to an `http://` API as mixed content.
 
 ## Run in Production (Docker Compose)
 
@@ -46,6 +47,7 @@ Frontend (`client`) environment variable:
 - Example local value: `http://localhost:8000`
 - In local frontend development, create `client/.env.local` from `client/.env.example`
 - In Vercel, set `NEXT_PUBLIC_API_URL` in Project Settings -> Environment Variables (instead of uploading a `.env` file)
+- In Vercel, use a public HTTPS backend URL, not a raw `http://` IP address
 
 The frontend uses this variable for:
 
