@@ -20,10 +20,10 @@ export default function Home() {
     setError('');
 
     try {
-      let userId = localStorage.getItem('notepad_user_id');
+      let userId = sessionStorage.getItem('notepad_user_id');
       if (!userId) {
         userId = crypto.randomUUID();
-        localStorage.setItem('notepad_user_id', userId);
+        sessionStorage.setItem('notepad_user_id', userId);
       }
       
       const response = await fetch(buildApiUrl('/api/room'), {

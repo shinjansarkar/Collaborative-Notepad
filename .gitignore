@@ -108,4 +108,3 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .venv/
-tests/

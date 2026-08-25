@@ -11,7 +11,7 @@ import {
   Users, History, FolderOpen, MessageSquare, Copy, X, Shield, Globe, Link2, PenTool
 } from 'lucide-react';
 import BackgroundBlobs from '@/components/BackgroundBlobs';
-import { API_BASE_URL, SOCKET_IO_PATH, buildApiUrl } from '@/lib/api';
+import { API_BASE_URL, getSocketConfig, buildApiUrl } from '@/lib/api';
 
 interface PageProps {
   params: Promise<{ roomId: string }>;
@@ -80,11 +80,11 @@ export default function RoomPage({ params }: PageProps) {
 
     async function checkRoom() {
       try {
-        // Setup identity
-        let storedUserId = localStorage.getItem('notepad_user_id');
+        // Setup identity (use sessionStorage so multiple tabs in same browser register as distinct users)
+        let storedUserId = sessionStorage.getItem('notepad_user_id');
         if (!storedUserId) {
           storedUserId = crypto.randomUUID();
-          localStorage.setItem('notepad_user_id', storedUserId);
+          sessionStorage.setItem('notepad_user_id', storedUserId);
         }
         setMyUserId(storedUserId);
 
@@ -175,8 +175,9 @@ export default function RoomPage({ params }: PageProps) {
   useEffect(() => {
     if (loading || roomError || !myUserId) return;
 
-    const socket = io(API_BASE_URL || undefined, {
-      path: SOCKET_IO_PATH,
+    const { origin: socketOrigin, path: socketPath } = getSocketConfig();
+    const socket = io(socketOrigin || undefined, {
+      path: socketPath,
       transports: ['websocket', 'polling']
     });
     socketRef.current = socket;

@@ -1,12 +1,16 @@
-# name: Deploy Collaborative Notepad Backend
+name: Deploy Collaborative Notepad Backend
 
 on:
   push:
     branches:
       - master
+      - main
     paths:
       - "server/**"
-      - ".github/workflows/deploy.yml"
+      - "client/**"
+      - "tests/**"
+      - ".github/workflows/**"
+
 
 env:
   IMAGE_NAME: shinjan7/collaborative-notepad-backend

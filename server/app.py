@@ -147,13 +147,26 @@ def create_room():
     }
     return jsonify({"room_id": room_id}), 201
 
+def is_lock_expired(typing_lock):
+    if not typing_lock.get("user_id"):
+        return True
+    return (time.time() - typing_lock.get("timestamp", 0)) > 3.0
+
+
 # Versioned room lookup endpoint, kept in sync with the legacy alias below.
 @app.route('/api/v1/room/<room_id>', methods=['GET'])
 # Backward-compatible room lookup alias for existing clients.
 @app.route('/api/room/<room_id>', methods=['GET'])
 def check_room(room_id):
     if room_id not in docs:
-        return jsonify({"error": "Room not found", "exists": False}), 404
+        docs[room_id] = {
+            "content": "",
+            "admin_id": None,
+            "known_viewers": {},
+            "viewer_count": 0,
+            "active_sessions": {},
+            "typing_lock": { "user_id": None, "role": None, "timestamp": 0 }
+        }
     
     return jsonify({
         "room_id": room_id,
@@ -210,8 +223,8 @@ def typing_start(data):
     room_data = docs[room]
     current_lock = room_data["typing_lock"]["user_id"]
     
-    # Grant lock if it's free or if the same user is renewing it
-    if current_lock is None or current_lock == user_id:
+    # Grant lock if it's free, if the same user is renewing it, or if previous lock expired
+    if current_lock is None or current_lock == user_id or is_lock_expired(room_data["typing_lock"]):
         room_data["typing_lock"] = {
             "user_id": user_id,
             "role": get_user_role(room_data, user_id),
@@ -244,13 +257,15 @@ def update(data):
     room_data = docs[room]
     current_lock = room_data["typing_lock"]["user_id"]
     
-    # Only allow update if lock is free or held by this user
-    if current_lock is None or current_lock == user_id:
+    # Only allow update if lock is free, held by this user, or expired
+    if current_lock is None or current_lock == user_id or is_lock_expired(room_data["typing_lock"]):
         room_data["content"] = content
         emit('update', content, to=room, skip_sid=request.sid)
         
         # Auto-renew lock timestamp on active typing
-        if current_lock == user_id:
+        if current_lock == user_id or is_lock_expired(room_data["typing_lock"]):
+            room_data["typing_lock"]["user_id"] = user_id
+            room_data["typing_lock"]["role"] = get_user_role(room_data, user_id)
             room_data["typing_lock"]["timestamp"] = time.time()
 
 @socketio.on('disconnect')
