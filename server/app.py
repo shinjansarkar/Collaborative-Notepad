@@ -16,7 +16,7 @@ def parse_cors_origins(raw_origins):
     value = (raw_origins or "").strip()
     if not value or value == "*":
         return "*"
-    return [origin.strip() for origin in value.split(",") if origin.strip()]
+    return [origin.strip().rstrip("/") for origin in value.split(",") if origin.strip()]
 
 
 ALLOWED_CORS_ORIGINS = parse_cors_origins(CORS_ORIGINS)
@@ -24,29 +24,47 @@ API_NAME = "Collaborative Notepad API"
 API_VERSION = "1.0.0"
 
 app = Flask(__name__)
-# Same-origin Socket.IO traffic is proxied through Nginx.
+# Allow cross-origin Socket.IO traffic (e.g. Vercel frontend to Oracle backend)
 socketio = SocketIO(
     app,
     async_mode='eventlet',
-    cors_allowed_origins=ALLOWED_CORS_ORIGINS,
+    cors_allowed_origins='*',
+    always_connect=True
 )
 
 docs = {}
+
+
+def is_origin_allowed(origin):
+    if not origin:
+        return True
+    if ALLOWED_CORS_ORIGINS == "*":
+        return True
+    normalized_origin = origin.strip().rstrip("/")
+    for allowed in ALLOWED_CORS_ORIGINS:
+        if allowed == "*" or normalized_origin == allowed:
+            return True
+        if ".vercel.app" in allowed and normalized_origin.endswith(".vercel.app"):
+            return True
+    return False
 
 
 @app.after_request
 def add_cors_headers(response):
     origin = request.headers.get("Origin")
 
-    if ALLOWED_CORS_ORIGINS == "*":
-        response.headers["Access-Control-Allow-Origin"] = origin or "*"
-    elif origin and origin in ALLOWED_CORS_ORIGINS:
+    if origin and is_origin_allowed(origin):
         response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    elif ALLOWED_CORS_ORIGINS == "*":
+        response.headers["Access-Control-Allow-Origin"] = origin or "*"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
 
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
     response.headers["Vary"] = "Origin"
     return response
+
 
 
 @app.errorhandler(HTTPException)
