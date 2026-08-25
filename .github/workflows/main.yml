@@ -4,7 +4,7 @@ on:
       - master
     paths:
       - "server/**"
-      - ".github/workflows/deploy.yml"
+      - ".github/workflows/main.yml"
 
 env:
   IMAGE_NAME: shinjan7/collaborative-notepad-backend
