@@ -17,14 +17,11 @@ export function getSocketConfig(): { origin: string | undefined; path: string } 
   }
   try {
     const parsed = new URL(API_BASE_URL);
-    const origin = parsed.origin;
-    const prefix = parsed.pathname.replace(/\/+$/, '');
-    const path = prefix ? `${prefix}/socket.io` : '/socket.io';
-    return { origin, path };
+    // Connect Socket.IO to the origin host using the dedicated /socket.io path configured in Nginx
+    return { origin: parsed.origin, path: '/socket.io' };
   } catch {
     return { origin: API_BASE_URL, path: '/socket.io' };
   }
 }
 
 export const SOCKET_IO_PATH = '/socket.io';
-
