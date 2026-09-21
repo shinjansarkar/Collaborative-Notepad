@@ -3,10 +3,14 @@ import os
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_socketio import SocketIO, emit, join_room
 from werkzeug.exceptions import HTTPException
 import uuid
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, Gauge
+
+ACTIVE_ROOMS = Gauge('collaborative_notepad_active_rooms', 'Number of active rooms')
+ACTIVE_USERS = Gauge('collaborative_notepad_active_users', 'Number of active users across all rooms')
 SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
@@ -143,6 +147,14 @@ def get_user_role(room_data, user_id):
 @app.route('/healthz', methods=['GET'])
 def healthz():
     return jsonify({"status": "ok"}), 200
+
+# Prometheus metrics endpoint
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    ACTIVE_ROOMS.set(len(docs))
+    total_users = sum(len(room_data["active_sessions"]) for room_data in docs.values())
+    ACTIVE_USERS.set(total_users)
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 # Versioned room creation endpoint, kept in sync with the legacy alias below.
 @app.route('/api/v1/room', methods=['POST'])

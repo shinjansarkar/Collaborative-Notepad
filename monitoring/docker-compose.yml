@@ -1,0 +1,37 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    container_name: collaborative-notepad-prometheus
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - backend_network
+      - monitoring_network
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: collaborative-notepad-grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - monitoring_network
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  # The root Compose project creates this network for the backend.
+  backend_network:
+    external: true
+    name: ${BACKEND_NETWORK:-notepad_backend_default}
+  monitoring_network:
+    driver: bridge

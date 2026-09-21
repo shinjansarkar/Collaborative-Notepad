@@ -1,0 +1,61 @@
+name: Monitoring Deployment
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "monitoring/**"
+      - ".github/workflows/monitoring.yml"
+
+jobs:
+  deploy-monitoring:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1. Get repository files
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+
+      # 2. Create monitoring directory on server
+      - name: Prepare Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+
+          script: |
+            mkdir -p /opt/apps/monitoring
+
+
+      # 3. Copy ONLY monitoring directory
+      - name: Copy Monitoring Files
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+
+          source: "monitoring/*"
+          target: "/opt/apps/monitoring"
+          strip_components: 1
+          overwrite: true
+
+
+      # 4. Start / update monitoring stack
+      - name: Deploy Monitoring Stack
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+
+          script: |
+            cd /opt/apps/monitoring
+
+            docker compose up -d
+
+            docker image prune -af

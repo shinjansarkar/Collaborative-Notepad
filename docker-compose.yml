@@ -1,0 +1,25 @@
+services:
+  backend:
+    image: shinjan7/collaborative-notepad-backend:latest
+    #while using in the development environment, uncomment the below lines and comment the image line above
+    # build:
+    #   context: ./server
+    container_name: collaborative-notepad-backend
+
+    restart: unless-stopped
+
+    ports:
+      - "5001:8000"
+
+    env_file:
+      - .env
+
+    security_opt:
+      - no-new-privileges:true
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',8000)); s.close()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
